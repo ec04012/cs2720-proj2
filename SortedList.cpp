@@ -2,7 +2,8 @@
 
 // Class constructor.
 template <class ItemType>
-SortedList<ItemType>::SortedList() {
+SortedList<ItemType>::SortedList() {    
+    Length = 0;
 }
 
 // Class destructor.
@@ -22,7 +23,7 @@ void SortedList<ItemType>::makeEmpty() {
 // Post: Function value = (list is empty)
 template <class ItemType>
 bool SortedList<ItemType>::isEmpty() const {
-	return false;
+    return false;
 }
 
 // Function: Determines whether the list is full.
@@ -30,7 +31,7 @@ bool SortedList<ItemType>::isEmpty() const {
 // Post: Function value = (list is full)
 template <class ItemType>
 bool SortedList<ItemType>::isFull() const {
-	return false;
+    return false;
 }
 
 // Function: Adds newItem to the end of the list.
@@ -56,7 +57,7 @@ void SortedList<ItemType>::deleteItem(ItemType item) {
 // post: Function value = number of elemnts in the list.
 template <class ItemType>
 int SortedList<ItemType>::getLength() const {
-	return -1;
+    return -1;
 }
 
 // Function: returns the ith element of the list
@@ -65,8 +66,8 @@ int SortedList<ItemType>::getLength() const {
 // Throws the exception OutOfBound, if i>getLenghth() or i <=0
 template <class ItemType>
 ItemType SortedList<ItemType>::getAt(int i) {
-	ItemType x;
-	return x;
+    ItemType x;
+    return x;
 }
 
 // Function: Merges two sorted lists in place.
@@ -95,5 +96,20 @@ void SortedList<ItemType>::printList(ofstream&) {
 //        if no predescessor exit, predecessor is set to NULL.
 template <class ItemType>
 bool SortedList<ItemType>::findItem(ItemType item, Node<ItemType>*& predecessor) {
-	return false;
+	predecessor = NULL;
+    Node<ItemType>* location = listData;
+    while (location != NULL && location->info < item) {
+        predecessor = location;
+        location = location->next;
+    }
+
+    // Special case if item has to be inserted at the very end of the list
+    if (location-> info < item) {
+        predecessor = location;
+    }
+
+	if (location->info == item) {
+		return true;
+	}
+    return false;
 }
