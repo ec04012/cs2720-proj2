@@ -23,7 +23,7 @@ void SortedList<ItemType>::makeEmpty() {
 // Post: Function value = (list is empty)
 template <class ItemType>
 bool SortedList<ItemType>::isEmpty() const {
-    return false;
+    return Length == 0;
 }
 
 // Function: Determines whether the list is full.
@@ -31,7 +31,14 @@ bool SortedList<ItemType>::isEmpty() const {
 // Post: Function value = (list is full)
 template <class ItemType>
 bool SortedList<ItemType>::isFull() const {
-    return false;
+    // Try to allocate a new node, if not possible then list if full
+    try {
+        Node<ItemType> temp = new Node<ItemType>;
+        delete temp;
+        return false;
+    } catch (std::bad_alloc) {
+        return true;
+    }    
 }
 
 // Function: Adds newItem to the end of the list.
@@ -66,7 +73,7 @@ int SortedList<ItemType>::getLength() const {
 // Throws the exception OutOfBound, if i>getLenghth() or i <=0
 template <class ItemType>
 ItemType SortedList<ItemType>::getAt(int i) {
-    if (i > getLenghth() || i <= 0) {
+    if (i > getLength() || i <= 0) {
         throw OutOfBound();
     }
     Node<ItemType>* temp = listData;
