@@ -2,7 +2,7 @@
 
 // Class constructor.
 template <class ItemType>
-SortedList<ItemType>::SortedList() {    
+SortedList<ItemType>::SortedList() {
     Length = 0;
 }
 
@@ -66,8 +66,14 @@ int SortedList<ItemType>::getLength() const {
 // Throws the exception OutOfBound, if i>getLenghth() or i <=0
 template <class ItemType>
 ItemType SortedList<ItemType>::getAt(int i) {
-    ItemType x;
-    return x;
+    if (i > getLenghth() || i <= 0) {
+        throw OutOfBound();
+    }
+    Node<ItemType>* temp = listData;
+    for (int j = 1; j < i; j++) {
+        temp = temp -> next;
+    }    
+    return temp -> info;
 }
 
 // Function: Merges two sorted lists in place.
@@ -96,7 +102,7 @@ void SortedList<ItemType>::printList(ofstream&) {
 //        if no predescessor exit, predecessor is set to NULL.
 template <class ItemType>
 bool SortedList<ItemType>::findItem(ItemType item, Node<ItemType>*& predecessor) {
-	predecessor = NULL;
+    predecessor = NULL;
     Node<ItemType>* location = listData;
     while (location != NULL && location->info < item) {
         predecessor = location;
@@ -104,12 +110,12 @@ bool SortedList<ItemType>::findItem(ItemType item, Node<ItemType>*& predecessor)
     }
 
     // Special case if item has to be inserted at the very end of the list
-    if (location-> info < item) {
+    if (location->info < item) {
         predecessor = location;
     }
 
-	if (location->info == item) {
-		return true;
-	}
+    if (location->info == item) {
+        return true;
+    }
     return false;
 }
