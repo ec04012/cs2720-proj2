@@ -38,7 +38,7 @@ bool SortedList<ItemType>::isFull() const {
         return false;
     } catch (std::bad_alloc) {
         return true;
-    }    
+    }
 }
 
 // Function: Adds newItem to the end of the list.
@@ -64,7 +64,7 @@ void SortedList<ItemType>::deleteItem(ItemType item) {
 // post: Function value = number of elemnts in the list.
 template <class ItemType>
 int SortedList<ItemType>::getLength() const {
-    return -1;
+    return Length;
 }
 
 // Function: returns the ith element of the list
@@ -78,9 +78,9 @@ ItemType SortedList<ItemType>::getAt(int i) {
     }
     Node<ItemType>* temp = listData;
     for (int j = 1; j < i; j++) {
-        temp = temp -> next;
-    }    
-    return temp -> info;
+        temp = temp->next;
+    }
+    return temp->info;
 }
 
 // Function: Merges two sorted lists in place.
