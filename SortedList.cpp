@@ -64,6 +64,24 @@ void SortedList<ItemType>::putItem(ItemType newItem) {
 //   else Item is not in the list.
 template <class ItemType>
 void SortedList<ItemType>::deleteItem(ItemType item) {
+    // predecessor node 
+    Node<ItemType>* pred;
+
+    if (!findItem(item, pred)) {
+        // if item is not in list, throw exception
+        throw DeletingMissingItem();
+    } else if (pred == NULL) {
+        // special case for deleting first element
+        Node<ItemType>* loc = listData;
+        listData = listData->next;
+        delete loc;
+    } else {
+        // regular case, connect pred to next next
+        // then delete the node
+        Node<ItemType>* loc = pred->next;
+        pred->next = loc->next;
+        delete loc;
+    }
 }
 
 // Function: returns the number of items in the list
@@ -121,11 +139,6 @@ bool SortedList<ItemType>::findItem(ItemType item, Node<ItemType>*& predecessor)
     while (location != NULL && location->info < item) {
         predecessor = location;
         location = location->next;
-    }
-
-    // Special case if item has to be inserted at the very end of the list
-    if (location->info < item) {
-        predecessor = location;
     }
 
     if (location->info == item) {
