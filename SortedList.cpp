@@ -56,6 +56,29 @@ bool SortedList<ItemType>::isFull() const {
 //         list maintains the sortedness property
 template <class ItemType>
 void SortedList<ItemType>::putItem(ItemType newItem) {
+    // Check for full list
+    if (isFull()) {
+        throw FullList();
+    }
+
+    // predecessor node
+    Node<ItemType>* pred;
+
+    // Attemp to insert item
+    if (findItem(newItem, pred)) {
+        // if item is in list, throw exception
+        throw DuplicateItem();
+    } else if (pred == NULL) {
+        // special case for empty list
+        listData = new Node<ItemType>
+        listData->info = newItem;
+    } else {
+        // regular case, insert a new node
+        Node<ItemType>* newNode = new Node<ItemType>;
+        newNode->info = newItem;
+        newNode->next = pred->next;
+        pred->next = newNode;
+    }
 }
 
 // Function: deletes Item from the list.
@@ -64,7 +87,7 @@ void SortedList<ItemType>::putItem(ItemType newItem) {
 //   else Item is not in the list.
 template <class ItemType>
 void SortedList<ItemType>::deleteItem(ItemType item) {
-    // predecessor node 
+    // predecessor node
     Node<ItemType>* pred;
 
     if (!findItem(item, pred)) {
