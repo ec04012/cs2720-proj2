@@ -9,6 +9,7 @@ SortedList<ItemType>::SortedList() {
 // Class destructor.
 template <class ItemType>
 SortedList<ItemType>::~SortedList() {
+    makeEmpty();
 }
 
 // Function: Deallocates all list nodes, and reinitializes the list to its empty state.
@@ -16,6 +17,12 @@ SortedList<ItemType>::~SortedList() {
 // Post: list is empty.
 template <class ItemType>
 void SortedList<ItemType>::makeEmpty() {
+    Node<ItemType>* tempPtr;
+    while (listData != NULL) {
+        tempPtr = listData;
+        listData = listData->next;
+        delete tempPtr;
+    }
 }
 
 // Function: Determines whether the list is empty.
