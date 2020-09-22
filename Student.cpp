@@ -30,14 +30,22 @@ void Student::setName(string const& newName) {
 
 // Operator overloads
 bool Student::operator==(Student& s) {
-    if (id == s.getID()) {
-        return true;
-    } else {
-        return false;
-    }
+    return id == s.getID();
 }
 
-ostream & operator<<(ostream &out, const Student&stu) {
+bool Student::operator!=(Student& s) {
+    return !(id == s.getID());
+}
+
+bool Student::operator<(Student& s) {
+    return id < s.getID();
+}
+
+bool Student::operator>(Student& s) {
+    return id > s.getID();
+}
+
+ostream& operator<<(ostream& out, const Student& stu) {
     out << stu.getID() << " " << stu.getName();
     return out;
 }

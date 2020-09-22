@@ -24,6 +24,9 @@ class Student {
 
     // Operator overloads
     bool operator==(Student &s);
+    bool operator!=(Student &s);
+    bool operator<(Student &s);
+    bool operator>(Student &s);
     friend ostream &operator<<(ostream &out, const Student &stu);
 
    private:
