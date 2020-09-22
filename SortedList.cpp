@@ -148,10 +148,74 @@ ItemType SortedList<ItemType>::getAt(int i) {
 //               otherList is sorted.
 // Postconditions: Function returns the implicit list (current List)
 // after inserting all elements of otherList at their correct positions.
-// Current list is sortedand with no duplicate keys.
+// Current list is sorted and with no duplicate keys.
 // otherList is empty.
 template <class ItemType>
 void SortedList<ItemType>::merge(SortedList& otherList) {
+    // Check for null/empty lists
+    if (listData == NULL) {
+        // If this list is empty, then set its listData to otherList
+        // We dont care whether otherList is empty or not
+        listData = otherList.listData;
+        otherList.listData = NULL;
+        return;
+    } else if (otherList.listData == NULL) {
+        // If other list is empty, we have nothing to merge
+        return;
+    }
+
+    // Both lists are non-empty and sorted
+    Node<ItemType>* p = this->listData;
+    Node<ItemType>* q = otherList.listData;
+    Node<ItemType>* current;  // current is the last element inserted into the merged list
+
+    // Set listData to the list whose first element is smaller. Update the current pointer
+    if (p->info <= q->info) {
+        // listData already = p
+        current = p;
+        p = p->next;
+    } else {
+        listData = q;
+        current = q;
+        q = q->next;
+    }
+    this->Length = 1;
+
+    while (p != NULL && q != NULL) {
+        if (p->info == q->info) {
+            // Link the duplicate from this list
+            current->next = p;
+            current = current->next;
+            p = p->next;
+
+            // Delete duplicate from other list
+            Node<ItemType>* temp = q;
+            q = q->next;
+            temp->next = NULL;
+            delete temp;
+
+        } else if (p->info < q->info) {
+            current->next = p;
+            current = current->next;
+            p = p->next;
+        } else {
+            current->next = q;
+            current = current->next;
+            q = q->next;
+        }
+        Length++;
+    }
+
+    // link current node to the non-empty list
+    if (p != NULL) {
+        current->next = p;
+    } else {
+        current->next = q;
+    }
+    
+    // Make other list null and empty
+    otherList.listData = NULL;
+    otherList.Length = 0;
 }
 
 // Function: Prints the list to a file
