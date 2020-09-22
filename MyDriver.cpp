@@ -21,7 +21,7 @@ int main() {
 	SortedList<int> list1;	
 	ofstream outFile;
 	outFile.open("testOutFile.txt");
-	
+	list1.putItem(32);
 	list1.putItem(400);		
 	list1.putItem(123);		
 	list1.putItem(50);
@@ -34,6 +34,7 @@ int main() {
 	list2.putItem(64);
 	list2.putItem(128);
 	list2.putItem(200);
+	list2.putItem(400);
 	list2.printList(outFile);
 	
 	outFile << endl << "Merging lists" << endl << endl;

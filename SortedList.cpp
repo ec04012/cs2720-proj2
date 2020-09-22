@@ -159,8 +159,9 @@ void SortedList<ItemType>::merge(SortedList& otherList) {
         listData = otherList.listData;
         otherList.listData = NULL;
         return;
-    } else if (otherList.listData == NULL) {
+    } else if (otherList.listData == NULL || otherList.listData == listData) {
         // If other list is empty, we have nothing to merge
+        // if we are trying to merge a list with itself, exit
         return;
     }
 
@@ -170,7 +171,18 @@ void SortedList<ItemType>::merge(SortedList& otherList) {
     Node<ItemType>* current;  // current is the last element inserted into the merged list
 
     // Set listData to the list whose first element is smaller. Update the current pointer
-    if (p->info <= q->info) {
+    if (p->info == q->info) {
+        // special case if the first elements of both lists are duplicates, delete a duplicate
+        // listData already = p
+        current = p;
+        p = p->next;
+
+        // delete duplicate
+        Node<ItemType>* temp = q;
+        q = q->next;
+        delete temp;
+    }
+    if (p->info < q->info) {
         // listData already = p
         current = p;
         p = p->next;
