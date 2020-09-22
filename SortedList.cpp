@@ -3,6 +3,7 @@
 // Class constructor.
 template <class ItemType>
 SortedList<ItemType>::SortedList() {
+    listData = NULL;
     Length = 0;
 }
 
@@ -31,7 +32,7 @@ void SortedList<ItemType>::makeEmpty() {
 // Post: Function value = (list is empty)
 template <class ItemType>
 bool SortedList<ItemType>::isEmpty() const {
-    return Length == 0;
+    return listData == NULL;
 }
 
 // Function: Determines whether the list is full.
@@ -63,24 +64,24 @@ void SortedList<ItemType>::putItem(ItemType newItem) {
     }
 
     // predecessor node
-    Node<ItemType>* pred;
+    Node<ItemType>* pred = NULL;
 
     // Attemp to insert item
     if (findItem(newItem, pred)) {
         // if item is in list, throw exception
         throw DuplicateItem();
-    } else if (pred == NULL) {
-        // special case for inserting at beginning
-        Node<ItemType>* newNode = new Node<ItemType>;
-        newNode->info = newItem;
-        newNode->next = listData;
-        listData = newNode;
     } else {
-        // regular case, insert a new node in middle or end of list        
         Node<ItemType>* newNode = new Node<ItemType>;
         newNode->info = newItem;
-        newNode->next = pred->next;
-        pred->next = newNode;
+        if (pred == NULL) {
+            // special case for inserting at beginning
+            newNode->next = listData;
+            listData = newNode;
+        } else {
+            // regular case, insert a new node in middle or at end of list
+            newNode->next = pred->next;
+            pred->next = newNode;
+        }
     }
     Length++;
 }
@@ -94,18 +95,22 @@ void SortedList<ItemType>::deleteItem(ItemType item) {
     // predecessor node
     Node<ItemType>* pred;
 
+    if (isEmpty()) {
+        throw EmptyList();
+    }
+
     if (!findItem(item, pred)) {
         // if item is not in list, throw exception
         throw DeletingMissingItem();
     } else if (pred == NULL) {
         // special case for deleting first element
         Node<ItemType>* loc = listData;
-        listData = listData->next;                
+        listData = listData->next;
         loc->next = NULL;
         delete loc;
     } else {
         // regular case, connect pred to next next
-        // then delete the node
+        // then delete the loc node
         Node<ItemType>* loc = pred->next;
         pred->next = loc->next;
         loc->next = NULL;
@@ -171,9 +176,6 @@ void SortedList<ItemType>::printList(ofstream& stream) {
 template <class ItemType>
 bool SortedList<ItemType>::findItem(ItemType item, Node<ItemType>*& predecessor) {
     predecessor = NULL;
-    if (listData == NULL) {        
-        return false;
-    }
 
     Node<ItemType>* location = listData;
     while (location != NULL && location->info < item) {
