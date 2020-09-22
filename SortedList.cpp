@@ -23,6 +23,7 @@ void SortedList<ItemType>::makeEmpty() {
         listData = listData->next;
         delete tempPtr;
     }
+    Length = 0;
 }
 
 // Function: Determines whether the list is empty.
@@ -69,16 +70,19 @@ void SortedList<ItemType>::putItem(ItemType newItem) {
         // if item is in list, throw exception
         throw DuplicateItem();
     } else if (pred == NULL) {
-        // special case for empty list
-        listData = new Node<ItemType>;
-        listData->info = newItem;
+        // special case for inserting at beginning
+        Node<ItemType>* newNode = new Node<ItemType>;
+        newNode->info = newItem;
+        newNode->next = listData;
+        listData = newNode;
     } else {
-        // regular case, insert a new node
+        // regular case, insert a new node in middle or end of list        
         Node<ItemType>* newNode = new Node<ItemType>;
         newNode->info = newItem;
         newNode->next = pred->next;
         pred->next = newNode;
     }
+    Length++;
 }
 
 // Function: deletes Item from the list.
@@ -96,15 +100,18 @@ void SortedList<ItemType>::deleteItem(ItemType item) {
     } else if (pred == NULL) {
         // special case for deleting first element
         Node<ItemType>* loc = listData;
-        listData = listData->next;
+        listData = listData->next;                
+        loc->next = NULL;
         delete loc;
     } else {
         // regular case, connect pred to next next
         // then delete the node
         Node<ItemType>* loc = pred->next;
         pred->next = loc->next;
+        loc->next = NULL;
         delete loc;
     }
+    Length--;
 }
 
 // Function: returns the number of items in the list
@@ -152,7 +159,7 @@ void SortedList<ItemType>::printList(ofstream& stream) {
         stream << temp->info << "->";
         temp = temp->next;
     }
-    stream << "NULL";
+    stream << "NULL" << endl;
 }
 
 // Function: Searches the list for item and returns a pointer to item's predecessor node.
@@ -163,8 +170,8 @@ void SortedList<ItemType>::printList(ofstream& stream) {
 //        if no predescessor exit, predecessor is set to NULL.
 template <class ItemType>
 bool SortedList<ItemType>::findItem(ItemType item, Node<ItemType>*& predecessor) {
-    if (listData == NULL) {
-        predecessor = NULL;
+    predecessor = NULL;
+    if (listData == NULL) {        
         return false;
     }
 
@@ -174,7 +181,7 @@ bool SortedList<ItemType>::findItem(ItemType item, Node<ItemType>*& predecessor)
         location = location->next;
     }
 
-    if (location->info == item) {
+    if (location != NULL && location->info == item) {
         return true;
     }
 
