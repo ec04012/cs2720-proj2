@@ -28,8 +28,7 @@ class Student {
     bool operator<(Student &s);
     bool operator>(Student &s);
     friend ostream &operator<<(ostream &out, const Student &stu);
-
-   private:
+    
     int id;
     string name;
 };

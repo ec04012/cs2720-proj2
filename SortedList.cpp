@@ -40,7 +40,7 @@ template <class ItemType>
 bool SortedList<ItemType>::isFull() const {
     // Try to allocate a new node, if not possible then list if full
     try {
-        Node<ItemType> temp = new Node<ItemType>;
+        Node<ItemType>* temp = new Node<ItemType>;
         delete temp;
         return false;
     } catch (std::bad_alloc) {
@@ -70,7 +70,7 @@ void SortedList<ItemType>::putItem(ItemType newItem) {
         throw DuplicateItem();
     } else if (pred == NULL) {
         // special case for empty list
-        listData = new Node<ItemType>
+        listData = new Node<ItemType>;
         listData->info = newItem;
     } else {
         // regular case, insert a new node
@@ -146,7 +146,13 @@ void SortedList<ItemType>::merge(SortedList& otherList) {
 // pre: List is initialized
 // post: List is not changed
 template <class ItemType>
-void SortedList<ItemType>::printList(ofstream&) {
+void SortedList<ItemType>::printList(ofstream& stream) {
+    Node<ItemType>* temp = listData;
+    while (temp != NULL) {
+        stream << temp->info << "->";
+        temp = temp->next;
+    }
+    stream << "NULL";
 }
 
 // Function: Searches the list for item and returns a pointer to item's predecessor node.
@@ -157,7 +163,11 @@ void SortedList<ItemType>::printList(ofstream&) {
 //        if no predescessor exit, predecessor is set to NULL.
 template <class ItemType>
 bool SortedList<ItemType>::findItem(ItemType item, Node<ItemType>*& predecessor) {
-    predecessor = NULL;
+    if (listData == NULL) {
+        predecessor = NULL;
+        return false;
+    }
+
     Node<ItemType>* location = listData;
     while (location != NULL && location->info < item) {
         predecessor = location;
@@ -167,5 +177,6 @@ bool SortedList<ItemType>::findItem(ItemType item, Node<ItemType>*& predecessor)
     if (location->info == item) {
         return true;
     }
+
     return false;
 }
