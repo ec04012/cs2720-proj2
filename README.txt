@@ -5,5 +5,6 @@ ec04012
 compile and link with make or make link
 run with make run
 clean with make clean
-student can be compiled separately with make Student
-unsortedList can be compild separately with make UnsortedList
+
+Student can be compiled separately with make Student
+SortedList can be compild separately with make SortedList
