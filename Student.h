@@ -32,5 +32,5 @@ class Student {
     int id;
     string name;
 };
-#include "Student.cpp"
+
 #endif
