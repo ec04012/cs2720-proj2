@@ -236,6 +236,7 @@ void SortedList<ItemType>::merge(SortedList& otherList) {
 template <class ItemType>
 void SortedList<ItemType>::printList(ofstream& stream) {
     Node<ItemType>* temp = listData;
+    stream << "List Items : ";
     while (temp != NULL) {
         stream << temp->info << "->";
         temp = temp->next;
