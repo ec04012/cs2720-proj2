@@ -7,4 +7,4 @@ run with make run
 clean with make clean
 
 Student can be compiled separately with make Student
-SortedList can be compild separately with make SortedList
+SortedList can be compiled separately with make SortedList
